@@ -16,6 +16,7 @@ class ChatUser(TerminalMessage):
     """
     TerminalMessage –– base for message in the terminal
     """
+
     def __init__(self, username, request, answer, kind):
         """
         :param username: user's username

@@ -10,7 +10,8 @@ import telebot
 from terminal.message.main import TerminalMessage
 # user's message in the terminal
 from terminal.message.chat_user import ChatUser
-
+# text for commands
+from data.commands.sentences import sentences_dict
 
 class GrammarBot:
     """ Class for bot.
@@ -46,13 +47,13 @@ class GrammarBot:
             """
             :param message: it is data which print in the table
             """
-            answer = """Hello from the system! f"""
+            answer = sentences_dict["start"]
             grammar_bot.send_chat_action(message.chat.id, 'typing')
             ChatUser(message.from_user.username,message.text,answer, "success").print()
             grammar_bot.send_message(message.from_user.id, answer)
 
         @grammar_bot.message_handler(commands=["help"])
         def help(message):
-            grammar_bot.send_message(message.from_user.id, "HELP")
+            grammar_bot.send_message(message.from_user.id, sentences_dict["help"])
 
 
