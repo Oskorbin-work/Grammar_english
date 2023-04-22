@@ -46,9 +46,13 @@ class GrammarBot:
             """
             :param message: it is data which print in the table
             """
-            answer = "Hello from the system!"
+            answer = """Hello from the system! f"""
+            grammar_bot.send_chat_action(message.chat.id, 'typing')
             ChatUser(message.from_user.username,message.text,answer, "success").print()
             grammar_bot.send_message(message.from_user.id, answer)
 
+        @grammar_bot.message_handler(commands=["help"])
+        def help(message):
+            grammar_bot.send_message(message.from_user.id, "HELP")
 
 
