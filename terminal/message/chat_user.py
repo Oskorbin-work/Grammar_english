@@ -37,6 +37,14 @@ class ChatUser(TerminalMessage):
         """
         :return: return data chat as message in the terminal (format as json)
         """
+        def spec_symbols_to_format_json(text):
+            special_symbol_python = ["\n"]
+            special_symbol_json = ["\\n"]
+            # replace special symbols.
+            for x,y in zip(special_symbol_python, special_symbol_json):
+                text = text.replace(x,y)
+            return text
+
         def data_to_json_dumps():
             """
             :return: data chat how as json
@@ -47,9 +55,12 @@ class ChatUser(TerminalMessage):
                         f'"Request": "{self.request}",' \
                         f'"Answer": "{self.answer}"' \
                         '}]'
+            json_data = spec_symbols_to_format_json(json_data)
+
             json_object = json.loads(json_data)
             dumps = json.dumps(json_object[0], indent=4, ensure_ascii=False)
             return dumps
+
 
         def json_dumps_to_message():
             """

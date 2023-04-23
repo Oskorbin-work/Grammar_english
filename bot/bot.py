@@ -3,6 +3,7 @@
 # -----------------------------------------------------------
 # API Telegram bot
 import telebot
+from telebot import types
 # -----------------------------------------------------------
 # Codes other files project
 # -----------------------------------------------------------
@@ -12,6 +13,8 @@ from terminal.message.main import TerminalMessage
 from terminal.message.chat_user import ChatUser
 # text for commands
 from data.commands.sentences import sentences_dict
+# text for buttons
+from data.buttons.names import buttons_name_dict
 
 class GrammarBot:
     """ Class for bot.
@@ -50,7 +53,16 @@ class GrammarBot:
             answer = sentences_dict["start"]
             grammar_bot.send_chat_action(message.chat.id, 'typing')
             ChatUser(message.from_user.username,message.text,answer, "success").print()
-            grammar_bot.send_message(message.from_user.id, answer)
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            item1 = types.KeyboardButton(buttons_name_dict["Enter sentences"])
+            item2 = types.KeyboardButton(buttons_name_dict["Grammar"])
+            markup.add(item1,item2)
+            grammar_bot.send_message(message.from_user.id, answer,reply_markup=markup)
+
+        @grammar_bot.message_handler(content_types='text')
+        def message_reply(message):
+            if message.text == "Ввести предложение":
+                grammar_bot.send_message(message.chat.id, message.text )
 
         @grammar_bot.message_handler(commands=["help"])
         def help(message):
