@@ -51,13 +51,19 @@ class GrammarBot:
             """
             answer = sentences_dict["start"]
             grammar_bot.send_chat_action(message.chat.id, 'typing')
-            ChatUser(message.from_user.username, message.text, answer, "success").print()
-            grammar_bot.send_message(message.from_user.id, answer, reply_markup=buttons.main())
+            buttons_current = buttons.main()
+            buttons_terminal = buttons.get_current_button(buttons_current)
+            grammar_bot.send_message(message.from_user.id, answer, reply_markup=buttons_current)
+
+            ChatUser(message.from_user.username, message.text, answer,buttons_terminal, "success").print()
 
         @grammar_bot.message_handler(content_types='text')
         def message_reply(message):
             if message.text == "Ввести предложение":
-                grammar_bot.send_message(message.chat.id, message.text )
+                answer = ''
+                buttons_terminal = ''
+                grammar_bot.send_message(message.chat.id, message.text)
+                ChatUser(message.from_user.username, message.text, answer, buttons_terminal, "success").print()
 
         @grammar_bot.message_handler(commands=["help"])
         def help(message):

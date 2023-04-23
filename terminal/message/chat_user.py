@@ -16,8 +16,7 @@ class ChatUser(TerminalMessage):
     """
     TerminalMessage –– base for message in the terminal
     """
-
-    def __init__(self, username, request, answer, kind):
+    def __init__(self, username, request, answer, buttons, kind):
         """
         :param username: user's username
         :param request: user's request
@@ -28,6 +27,7 @@ class ChatUser(TerminalMessage):
         self.username = username
         self.request = request
         self.answer = answer
+        self.buttons = buttons
         # -----------------------------------------------------------
         self.message = self.data_to_message()
         self.kind = kind
@@ -41,8 +41,8 @@ class ChatUser(TerminalMessage):
             special_symbol_python = ["\n"]
             special_symbol_json = ["\\n"]
             # replace special symbols.
-            for x,y in zip(special_symbol_python, special_symbol_json):
-                text = text.replace(x,y)
+            for x, y in zip(special_symbol_python, special_symbol_json):
+                text = text.replace(x, y)
             return text
 
         def data_to_json_dumps():
@@ -53,14 +53,14 @@ class ChatUser(TerminalMessage):
                         '"Type_message": "Conversation with user and bot", ' \
                         f'"Username": "{self.username}",' \
                         f'"Request": "{self.request}",' \
-                        f'"Answer": "{self.answer}"' \
+                        f'"Answer": "{self.answer}",' \
+                        f'"Buttons": "{self.buttons}"' \
                         '}]'
             json_data = spec_symbols_to_format_json(json_data)
 
             json_object = json.loads(json_data)
             dumps = json.dumps(json_object[0], indent=4, ensure_ascii=False)
             return dumps
-
 
         def json_dumps_to_message():
             """
